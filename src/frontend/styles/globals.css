@@ -1,0 +1,60 @@
+/* Reset and Base Styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+
+/* Color Variables */
+:root {
+  --primary-color: #217346;
+  --secondary-color: #2b579a;
+  --text-color: #333333;
+  --background-color: #ffffff;
+  --border-color: #e0e0e0;
+  --hover-color: #f4f4f4;
+  --error-color: #d92b2b;
+  --success-color: #107c10;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 { font-weight: 600; }
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+h4 { font-size: 16px; }
+h5 { font-size: 14px; }
+h6 { font-size: 12px; }
+a { color: var(--secondary-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Layout Utilities */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+.grid { display: grid; }
+.hidden { display: none; }
+
+/* Form Styles */
+input, select, textarea { font-family: inherit; font-size: inherit; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-color); }
+button { cursor: pointer; background-color: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; }
+button:hover { background-color: darken(var(--primary-color), 10%); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.font-bold { font-weight: bold; }
+.font-italic { font-style: italic; }
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Animation Classes */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.slide-in { animation: slideIn 0.3s ease-in-out; }
