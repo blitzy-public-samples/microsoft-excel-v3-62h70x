@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: Microsoft Excel API
+  version: 1.0.0
+  description: API for interacting with Microsoft Excel workbooks, worksheets, and cells
+servers:
+  - url: https://api.excel.microsoft.com/v1
+paths:
+  /workbooks:
+    get:
+      summary: List workbooks
+      description: Retrieve a list of workbooks for the authenticated user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Workbook'
+    post:
+      summary: Create a new workbook
+      description: Create a new workbook for the authenticated user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkbookCreate'
+      responses:
+        '201':
+          description: Workbook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workbook'
+  /workbooks/{workbookId}:
+    get:
+      summary: Get workbook details
+      description: Retrieve details of a specific workbook
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workbook'
+    put:
+      summary: Update workbook
+      description: Update details of a specific workbook
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkbookUpdate'
+      responses:
+        '200':
+          description: Workbook updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workbook'
+    delete:
+      summary: Delete workbook
+      description: Delete a specific workbook
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Workbook deleted successfully
+  /workbooks/{workbookId}/worksheets:
+    get:
+      summary: List worksheets
+      description: Retrieve a list of worksheets in a specific workbook
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Worksheet'
+    post:
+      summary: Create a new worksheet
+      description: Create a new worksheet in a specific workbook
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorksheetCreate'
+      responses:
+        '201':
+          description: Worksheet created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worksheet'
+  /workbooks/{workbookId}/worksheets/{worksheetId}/cells:
+    get:
+      summary: Get cells
+      description: Retrieve cells from a specific worksheet
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: worksheetId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: range
+          in: query
+          schema:
+            type: string
+          description: Cell range (e.g., A1:B10)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cell'
+    put:
+      summary: Update cells
+      description: Update cells in a specific worksheet
+      parameters:
+        - name: workbookId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: worksheetId  
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CellUpdate'
+      responses:
+        '200':
+          description: Cells updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cell'
+components:
+  schemas:
+    Workbook:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string  
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WorkbookCreate:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    WorkbookUpdate:
+      type: object  
+      properties:
+        name:
+          type: string
+    Worksheet:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        index:
+          type: integer
+    WorksheetCreate:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name  
+    Cell:
+      type: object
+      properties:
+        address:
+          type: string
+        value:
+          type: string
+        formula:
+          type: string
+        format:
+          type: object
+    CellUpdate:
+      type: object
+      properties:
+        address:
+          type: string
+        value:
+          type: string
+        formula:
+          type: string
+        format:
+          type: object
+      required:
+        - address
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
